@@ -1,0 +1,25 @@
+/* Load NLSW88 data */{
+	sysuse nlsw88.dta
+}
+/* Describe data */{
+	describe
+}
+/* summary of selected variables */{
+	su wage
+	su wage, d 			/* with details */
+	bys race: su wage /* race wise summary of wage */
+	bys union: su wage
+}
+/* oneway/twoway  tabulation using "tabulate" */{
+	tabulate race
+	tab union
+	tab race union   /* only frequency */
+	tab race union, row /* row wise percent */
+	tab race union, col		/* percent across column */
+	tab race union, cell	/* over all pecent of each cell */
+}
+/* Sort, gsort and list */{
+	sort race			/* sort data in ascending order of race */
+	list race wage
+	gsort -race 		/* sort data in the decending order of race	*/
+}
