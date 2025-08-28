@@ -1,0 +1,30 @@
+/* Load Data, describe, tab categorical variables*/{
+sysuse auto
+describe
+tab foreign
+}
+
+/* Regression and added-variable plots*/{
+	regress price mpg
+	reg price mpg rep78
+	avplots
+}
+/* regression and predicted and residual plots */{
+	reg price mpg
+	predict price_hat		/* Predicted values of the dependent variable */ 
+	predict u_hat, res     /* res for residual */
+	br price price_hat u_hat
+	twoway (scatter price mpg)
+	twoway (scatter price mpg) (line price_hat mpg)     /* line of the fitted value*/
+	twoway (scatter price mpg) (lfit  price mpg)		/* alternative using "lfit" */
+}
+/* category wise regression analysis */{
+	bys foreign: reg price mpg
+	predict price_foreign_hat if e(sample)
+	predict price_domestic_hat if !e(sample)
+	egen price_combine_hat= rowmax( price_foreign_hat   price_domestic_hat) /* egen command and rowmax command is used */
+	twoway (scatter price mpg, by(foreign))
+	twoway(scatter price mpg) (line price_combine_hat mpg) , by(foreign)
+	twoway (scatter price mpg, by(foreign)) (lfit price mpg, by(foreign)) /*alternative */
+
+}
